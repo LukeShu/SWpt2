@@ -24,11 +24,12 @@ public class ResponseActivity extends Activity implements MessageListener {
 		final Button button = (Button) findViewById(R.id.ready_button);
 		final TextView status = (TextView) findViewById(R.id.status_textview);
 
+		String host = getString(R.string.host_name);
+		int port = Integer.parseInt(getString(R.string.port_number));
 		try {
-			channel = new TCPChannel(getString(R.string.host_name),
-						 Integer.parseInt(getString(R.string.port_number)));
+			channel = new TCPChannel(host, port);
 		} catch (ChannelException e) {
-			status.setText("ERROR: could not create channel");
+			status.setText("ERROR: could not create channel to "+host+":"+port);
 		}
 
 		// A handler is needed since the message received is called from a
