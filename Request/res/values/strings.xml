@@ -17,6 +17,6 @@
     <string name="title_activity_request">Request Activity</string>
     
     <string name="host_name">data.cs.purdue.edu</string>
-    <string name="port_number">8888</string>
+    <string name="port_number">8365</string>
 
 </resources>
