@@ -7,7 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import edu.purdue.cs.cs180.channel.ChannelException;
-import edu.purdue.cs.cs180.channel.FailedToCreateChannelException;
 import edu.purdue.cs.cs180.channel.MessageListener;
 import edu.purdue.cs.cs180.channel.TCPChannel;
 
@@ -28,7 +27,7 @@ public class ResponseActivity extends Activity implements MessageListener {
 		try {
 			channel = new Channel(getString(R.string.host_name),
 					      Integer.parseInt(getString(R.string.port_number)));
-		} catch (FailedToCreateChannelException e) {
+		} catch (ChannelException e) {
 			System.exit(1);
 		}
 
