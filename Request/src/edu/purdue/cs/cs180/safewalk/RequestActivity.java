@@ -42,6 +42,7 @@ public class RequestActivity extends Activity implements MessageListener {
 		mHandler = new Handler() {
 			@Override
 			public void handleMessage(android.os.Message msg) {
+				status.setText("handleMessage");
 				Message safeWalkMessage = (Message) msg.obj;
 				switch (safeWalkMessage.getType()) {
 				case Searching:
@@ -53,7 +54,7 @@ public class RequestActivity extends Activity implements MessageListener {
 					button.setEnabled(true);
 					break;
 				default:
-					System.err.println("Unexpected message type: "+safeWalkMessage.getType());
+					status.setText("Unexpected message type: "+safeWalkMessage.getType());
 					break;
 				}
 			}
@@ -93,6 +94,6 @@ public class RequestActivity extends Activity implements MessageListener {
 	@Override
 	protected void onPause() {
 	    super.onPause();
-	    System.exit(0);
+	    //System.exit(0);
 	}
 }
