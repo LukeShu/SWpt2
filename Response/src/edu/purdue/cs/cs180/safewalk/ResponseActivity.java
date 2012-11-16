@@ -24,7 +24,12 @@ public class ResponseActivity extends Activity implements MessageListener {
 		final Button button = (Button) findViewById(R.id.ready_button);
 		final TextView status = (TextView) findViewById(R.id.status_textview);
 
-		//TODO: add channel initialization code.
+		try {
+			channel = new Channel(getString(R.string.host_name),
+					      Integer.parseInt(getString(R.string.port_number)));
+		} catch (FailedToCreateChannelException e) {
+			System.exit(1);
+		}
 
 		// A handler is needed since the message received is called from a
 		// different Thread, and only the main thread can update the UI.
@@ -34,7 +39,18 @@ public class ResponseActivity extends Activity implements MessageListener {
 			@Override
 			public void handleMessage(android.os.Message msg) {
 				Message safeWalkMessage = (Message) msg.obj;
-				//TODO: handle received message.
+				switch (safeWalkMessage.getType()) {
+				case Searching:
+					status.setText("Searching");
+					break;
+				case Assigned:
+					status.setText("Assigned: "+safeWalkMessage.getInfo());
+					button.setEnabled(true);
+					break;
+				default:
+					System.err.println("Unexpected message type: "+safeWalkMessage.getType());
+					break;
+				}
 			}
 		};
 
@@ -42,7 +58,14 @@ public class ResponseActivity extends Activity implements MessageListener {
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
 				button.setEnabled(false);
-				//TODO: send a message to the server.
+				Message msg = new Message(Message.Type.Response,
+							  "Help Team "+channel.getID(),
+							  channel.getID());
+				try {
+					channel.sendMessage(msg.toString());
+				} catch (ChannelException e) {
+					System.exit(1);
+				}
 			}
 		});
 	}
