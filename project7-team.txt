@@ -4,10 +4,10 @@
 // Team member 2: Jamerson, Michael, mjamers
 
 // Team leader: Shumaker, Luke, shumakl
-// list of .java classe(s)/method(s) implemented
+Initial implementation (all methods, did not have a working ADK)
 
 // Team member 1: Louden, Austin, loudena
-// list of .java classe(s)/method(s) implemented
+Debugged/fixed Luke's non-working code.
 
 // Team member 2: Jamerson, Michael, mjamers
-// list of .java classe(s)/method(s) implemented
+Debugged/fixed Luke's non-working code.
