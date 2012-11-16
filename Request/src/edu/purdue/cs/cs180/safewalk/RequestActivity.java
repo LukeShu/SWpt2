@@ -28,8 +28,8 @@ public class RequestActivity extends Activity implements MessageListener {
 		final TextView status = (TextView) findViewById(R.id.status_textview);
 
 		try {
-			channel = new Channel(getString(R.string.host_name),
-					      Integer.parseInt(getString(R.string.port_number)));
+			channel = new TCPChannel(getString(R.string.host_name),
+						 Integer.parseInt(getString(R.string.port_number)));
 		} catch (ChannelException e) {
 			System.exit(1);
 		}
