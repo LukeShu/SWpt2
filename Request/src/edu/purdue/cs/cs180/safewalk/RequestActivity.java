@@ -49,8 +49,8 @@ public class RequestActivity extends Activity implements MessageListener {
 					break;
 				case Assigned:
 					status.setText("Assigned: "+safeWalkMessage.getInfo());
-					location.setEnabled(true);
-					submit.setEnabled(true);
+					locations.setEnabled(true);
+					button.setEnabled(true);
 					break;
 				default:
 					System.err.println("Unexpected message type: "+safeWalkMessage.getType());
