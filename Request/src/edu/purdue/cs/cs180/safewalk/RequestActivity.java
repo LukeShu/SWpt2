@@ -7,6 +7,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import edu.purdue.cs.cs180.channel.ChannelException;
+import edu.purdue.cs.cs180.channel.FailedToCreateChannelException;
 import edu.purdue.cs.cs180.channel.MessageListener;
 import edu.purdue.cs.cs180.channel.TCPChannel;
 
@@ -26,7 +28,12 @@ public class RequestActivity extends Activity implements MessageListener {
 		final Spinner locations = (Spinner) findViewById(R.id.locations_spinner);
 		final TextView status = (TextView) findViewById(R.id.status_textview);
 
-		//TODO: Add channel creation code here.
+		try {
+			channel = new Channel(getString(R.string.host_name),
+					      Integer.parseInt(getString(R.string.port_number)));
+		} catch (FailedToCreateChannelException e) {
+			System.exit(1);
+		}
 
 		// A handler is needed since the message received is called from a
 		// different Thread, and only the main thread can update the UI.
@@ -36,7 +43,19 @@ public class RequestActivity extends Activity implements MessageListener {
 			@Override
 			public void handleMessage(android.os.Message msg) {
 				Message safeWalkMessage = (Message) msg.obj;
-				//TODO: handle the received message.
+				switch (safeWalkMessage.getType()) {
+				case Searching:
+					status.setText("Searching");
+					break;
+				case Assigned:
+					status.setText("Assigned: "+safeWalkMessage.getInfo());
+					location.setEnabled(true);
+					submit.setEnabled(true);
+					break;
+				default:
+					System.err.println("Unexpected message type: "+safeWalkMessage.getType());
+					break;
+				}
 			}
 		};
 
@@ -47,7 +66,14 @@ public class RequestActivity extends Activity implements MessageListener {
 				String selectedItem = (String) locations.getSelectedItem();
 				locations.setEnabled(false);
 				button.setEnabled(false);
-				//TODO: send a message to the Server.
+				Message msg = new Message(Message.Type.Request,
+							  selectedItem,
+							  channel.getID());
+				try {
+					channel.sendMessage(msg.toString());
+				} catch (ChannelException e) {
+					System.exit(1);
+				}
 			}
 		});
 	}
