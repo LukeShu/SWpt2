@@ -28,7 +28,7 @@ public class ResponseActivity extends Activity implements MessageListener {
 			channel = new TCPChannel(getString(R.string.host_name),
 						 Integer.parseInt(getString(R.string.port_number)));
 		} catch (ChannelException e) {
-			System.exit(1);
+			status.setText("ERROR: could not create channel");
 		}
 
 		// A handler is needed since the message received is called from a
@@ -64,7 +64,7 @@ public class ResponseActivity extends Activity implements MessageListener {
 				try {
 					channel.sendMessage(msg.toString());
 				} catch (ChannelException e) {
-					System.exit(1);
+					status.setText("ERROR: could not send message");
 				}
 			}
 		});
