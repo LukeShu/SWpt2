@@ -31,6 +31,7 @@ public class RequestActivity extends Activity implements MessageListener {
 		int port = Integer.parseInt(getString(R.string.port_number));
 		try {
 			channel = new TCPChannel(host, port);
+			channel.setMessageListener(this);
 		} catch (ChannelException e) {
 			status.setText("ERROR: could not create channel to "+host+":"+port);
 		}
