@@ -25,6 +25,7 @@ public class RequestActivity extends Activity implements MessageListener {
 		// the submit button.
 		final Button button = (Button) findViewById(R.id.submit_button);
 		final Spinner locations = (Spinner) findViewById(R.id.locations_spinner);
+		final Spinner urgency = (Spinner) findViewById(R.id.urgency_spinner);
 		final TextView status = (TextView) findViewById(R.id.status_textview);
 
 		String host = getString(R.string.host_name);
@@ -65,13 +66,16 @@ public class RequestActivity extends Activity implements MessageListener {
 			public void onClick(View v) {
 				Spinner locations = (Spinner) findViewById(R.id.locations_spinner);
 				String selectedItem = (String) locations.getSelectedItem();
+				Spinner urgency = (Spinner) findViewById(R.id.urgency_spinner);
+				String selectedUrgency = (String) urgency.getSelectedItem();
 				locations.setEnabled(false);
+				urgency.setEnabled(false);
 				button.setEnabled(false);
 				Message msg = new Message(Message.Type.Request,
 							  selectedItem,
 							  channel.getID());
 				try {
-					channel.sendMessage(msg.toString());
+					channel.sendMessage(msg.toString() + "|" + selectedUrgency);
 				} catch (ChannelException e) {
 					status.setText("ERROR: could not send message");
 				}

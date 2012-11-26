@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.TextView;
 import edu.purdue.cs.cs180.channel.ChannelException;
 import edu.purdue.cs.cs180.channel.MessageListener;
@@ -22,6 +23,7 @@ public class ResponseActivity extends Activity implements MessageListener {
 
 		// the ready button.
 		final Button button = (Button) findViewById(R.id.ready_button);
+		final Spinner locations = (Spinner) findViewById(R.id.locations_spinner);
 		final TextView status = (TextView) findViewById(R.id.status_textview);
 
 		String host = getString(R.string.host_name);
@@ -48,6 +50,7 @@ public class ResponseActivity extends Activity implements MessageListener {
 				case Assigned:
 					status.setText("Assigned: "+safeWalkMessage.getInfo());
 					button.setEnabled(true);
+					locations.setEnabled(true);
 					break;
 				default:
 					System.err.println("Unexpected message type: "+safeWalkMessage.getType());
@@ -59,12 +62,15 @@ public class ResponseActivity extends Activity implements MessageListener {
 		// The on click event.
 		button.setOnClickListener(new View.OnClickListener() {
 			public void onClick(View v) {
+				Spinner locations = (Spinner) findViewById(R.id.locations_spinner);
+				String selectedItem = (String) locations.getSelectedItem();
+				locations.setEnabled(false);
 				button.setEnabled(false);
 				Message msg = new Message(Message.Type.Response,
 							  "Help Team "+channel.getID(),
 							  channel.getID());
 				try {
-					channel.sendMessage(msg.toString());
+					channel.sendMessage(msg.toString() + "|" + selectedItem);
 				} catch (ChannelException e) {
 					status.setText("ERROR: could not send message");
 				}
